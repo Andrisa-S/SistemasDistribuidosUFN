@@ -1,7 +1,7 @@
 # Notas de Aula
 
 --------------------
-## Aula 1 - 27/07/26
+## Semana 1 - 27-31/07/26
 - **Introdução** - https://github.com/Andrisa-S/SistemasDistribuidosUFN/blob/4d2caadf0f1e9fd2f45835d429ac94ac958c87a4/Introducao.md
 - **Arquiteturas de Sistemas:**
   1) Cliente-Servidor
@@ -36,12 +36,14 @@
           - Monitor
           - Semáforo
           - deadlock
+  ### Sistemas Paralelos
+    - 
 
 --------------------
-## Aula 2 - 31/07/26
+## Semana 2 - 03-07/08/26
 
 --------------------
-## Aula 3 - 03/08/26
+## Semana 3 - 10-14/08/26
 
 --------------------
-## Aula 4 - 07/08/26
+## Semana 4 - 17-21/08/26
