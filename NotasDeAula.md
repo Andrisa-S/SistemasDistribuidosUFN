@@ -278,7 +278,16 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
 
 --------------------
 ## Semana 3 - 10-14/08/26
+- Revisão aula interativa
 
-
+  ### Configuração Firewall
+  - Windows Defender Firewall com Segurança Avançada
+    - Regras de saída
+      - Nova regra
+        - Porta -> TCP -> 12345
+    
+- Introdução de conceito de Servidor
+- Sockets e Pool
+- Código de Servidor Multithread
 --------------------
 ## Semana 4 - 17-21/08/26
