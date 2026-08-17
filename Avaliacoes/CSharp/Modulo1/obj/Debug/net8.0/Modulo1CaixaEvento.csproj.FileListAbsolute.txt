@@ -1,0 +1,14 @@
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo1\bin\Debug\net8.0\Modulo1CaixaEvento.exe
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo1\bin\Debug\net8.0\Modulo1CaixaEvento.deps.json
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo1\bin\Debug\net8.0\Modulo1CaixaEvento.runtimeconfig.json
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo1\bin\Debug\net8.0\Modulo1CaixaEvento.dll
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo1\bin\Debug\net8.0\Modulo1CaixaEvento.pdb
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo1\obj\Debug\net8.0\Modulo1CaixaEvento.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo1\obj\Debug\net8.0\Modulo1CaixaEvento.AssemblyInfoInputs.cache
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo1\obj\Debug\net8.0\Modulo1CaixaEvento.AssemblyInfo.cs
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo1\obj\Debug\net8.0\Modulo1CaixaEvento.csproj.CoreCompileInputs.cache
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo1\obj\Debug\net8.0\Modulo1CaixaEvento.dll
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo1\obj\Debug\net8.0\refint\Modulo1CaixaEvento.dll
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo1\obj\Debug\net8.0\Modulo1CaixaEvento.pdb
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo1\obj\Debug\net8.0\Modulo1CaixaEvento.genruntimeconfig.cache
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo1\obj\Debug\net8.0\ref\Modulo1CaixaEvento.dll

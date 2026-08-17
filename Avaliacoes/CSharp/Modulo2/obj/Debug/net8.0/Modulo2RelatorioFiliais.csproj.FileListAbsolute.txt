@@ -1,0 +1,14 @@
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo2\bin\Debug\net8.0\Modulo2RelatorioFiliais.exe
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo2\bin\Debug\net8.0\Modulo2RelatorioFiliais.deps.json
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo2\bin\Debug\net8.0\Modulo2RelatorioFiliais.runtimeconfig.json
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo2\bin\Debug\net8.0\Modulo2RelatorioFiliais.dll
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo2\bin\Debug\net8.0\Modulo2RelatorioFiliais.pdb
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo2\obj\Debug\net8.0\Modulo2RelatorioFiliais.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo2\obj\Debug\net8.0\Modulo2RelatorioFiliais.AssemblyInfoInputs.cache
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo2\obj\Debug\net8.0\Modulo2RelatorioFiliais.AssemblyInfo.cs
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo2\obj\Debug\net8.0\Modulo2RelatorioFiliais.csproj.CoreCompileInputs.cache
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo2\obj\Debug\net8.0\Modulo2RelatorioFiliais.dll
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo2\obj\Debug\net8.0\refint\Modulo2RelatorioFiliais.dll
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo2\obj\Debug\net8.0\Modulo2RelatorioFiliais.pdb
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo2\obj\Debug\net8.0\Modulo2RelatorioFiliais.genruntimeconfig.cache
+C:\Users\parks\OneDrive\Desktop\Avaliacoes\CSharp\Modulo2\obj\Debug\net8.0\ref\Modulo2RelatorioFiliais.dll
