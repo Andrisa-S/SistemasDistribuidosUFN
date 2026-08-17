@@ -291,3 +291,27 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
 - Código de Servidor Multithread
 --------------------
 ## Semana 4 - 17-21/08/26
+  ### Trabalho avaliativo - Threads
+  - https://github.com/alexandrezamberlan/sistemasDistribuidos/blob/master/5_trabalhos.md
+  - Mudar nome das variáveis em Java
+  - Get/Set/Synchronized
+  - Modelo MVC
+  - Java Doc
+  - 1. Seção Crítica
+    2. Sem compartilhamento de memória
+  - Java/C#/Python
+
+--------------------
+## Semana 5 - 24-28/08/26
+
+--------------------
+## Semana 6 - 31/08-04/09/26
+
+--------------------
+## Semana 7 - 07-11/09/26
+
+--------------------
+## Semana 8 - 14-19/09/26
+
+--------------------
+## Semana 9 - 21-25/09/26
