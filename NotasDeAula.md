@@ -303,6 +303,41 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
 
 --------------------
 ## Semana 5 - 24-28/08/26
+- Revisão
+  - Threads
+    - Sincronização
+      - Java: lock/synchronized
+      - Python: lock
+      - C#: lock
+  - SD
+    - Sincronização
+      - Relógio
+        - Físicos
+        - Lógicos
+      - Exclusão Mútua
+- Avaliação teórica **(28/08)**
+  ### Sincronização Distribuída
+  - Teoria básica de sistemas distribuídos
+    - O que é e para que serve -> compartilhar recurso (cpu, ram, memória secundária)
+    - Diferenças entre GRID (computação concomitante) e Cluster (computação paralela)
+      - Programação Concomitante = threads
+      - Programação paralela = cuda, openMP, MPI
+    - Comunicação entre computadores ou equipamentos em sistemas distribuídos
+      - modelo TCP/IP: endereço, porta, máscara de rede, socket, camada de transporte (UDP e TCP)
+    - Comunicação é leitura (consumidor) ou é escrita (produtor) - É BLOQUEANTE
+      - **THREADS**: mini processos concomitantes -> desbloquear a comunicação
+        - Sem memória compartilhada - somente rotinas/tarefas
+        - Com memória compartilhada - rotinas/tarefas + seção crítica
+        - Delegar uma rotina para thread; passar parâmetros; identificação
+      - **SINCRONISMO** -> acesso a seção crítica -> memória compartilhada
+        - Java: synchronized
+        - C# e Python: lock
+        - via relógio: físico e lógico (lamport)
+        - Exclusão mútua - lock ou relógio ou eleição
+  - Pool de Threads
+  - **Atividades:**
+    - Pesquisar, compilar e disponibilizar nos githubs pessoais sobre Relógios Físicos e Lógicos. Exclusão Mútua e Eleição
+    - Pesquisar, compilar e exemplificar sobre a teoria de pool de threads
 
 --------------------
 ## Semana 6 - 31/08-04/09/26
