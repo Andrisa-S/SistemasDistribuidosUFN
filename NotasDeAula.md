@@ -336,12 +336,58 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
         - Exclusão mútua - lock ou relógio ou eleição
   - Pool de Threads
   - **Atividades:**
+    - https://github.com/Andrisa-S/SistemasDistribuidosUFN/blob/d2b6c439cbe4afff572f214ea4a2ef414f6fa3c9/Atividades24-08.md
     - Pesquisar, compilar e disponibilizar nos githubs pessoais sobre Relógios Físicos e Lógicos. Exclusão Mútua e Eleição
     - Pesquisar, compilar e exemplificar sobre a teoria de pool de threads
 
 --------------------
 ## Semana 6 - 31/08-04/09/26
+### Discussão sobre a avaliação
+  - 1. Resposta *c)*
+    - Cluster: Sistema Pararelo e nós homogêneos
+    - Grid: Sistema Concomitante/concorrente e recursos heterogêneos
+  - 2. Operação bloqueante de servidores (socket), solução com uso de pool de threads
+       - Camada de abstração ~= Transparente
+  - 3. 
+       - a) Venda de ingressos com múltiplos caixas e um centralizado, utilizando memória compartilhada.
+       - b) Quando houver tarefas com dados e situações **dependentes**, como popular e ordenar.
+  - 4. Seção crítica surge no Desafio B, sem solução com sincronismo, pode ocorrer condição de corrida, deadlock, sobrescrita, em Java utiliza-se `synchronized`
+  - 5. Exclusão mútua: Centralizada, Distribuída e por Token Passing
+   
+### Introdução a Sockets
+ - Comunicação entre máquinas -> 'foco' de sistemas distribuídos
+   - Compartilhamento de recursos: memória, processador e gpu
+   - Modelo TCP/IP: camadas de funcionamento de uma rede de computadores -> foco na camada de transporte
+     - Pacote: remetente, destinatário, conteúdo
+     - Endereço de rede (IP), porta lógica, endereço de servidor e cliente
+     - Enlace, rede, transporte, sessão, apresentação, aplicação, middleware (rest, webservice, etc.)
+    - Exemplos de comunicação:
+      - Orientada a mensagem -> **socket** (raw)
+      - Chamada de procedimento remoto: objeto -> serialização
+        - RPC - Python
+        - RMI - Java
+        - REST
+    - Tipos de comunicação
+      - Em relação a sincronismo:
+        - Síncrona - return - TCP (camada de transporte) -> texto
+          - Bloqueante -> esperar a confirmação do destinário
+          - buffer (memória temporária, trasiente)
+        - Assíncrona - void - UDP (camada de transporte) -> áudio e vídeo (streaming)
+          - Não bloquante
+      - Em relação a persistência:
+        - Transiente
+          - Mensagem só é enviada se o destinário estiver online ou ligado (destinário precisa existir)
+        - Persistente
+          - Mensagem é enviada, mesmo o destinatário offline ou desligado (arquitetura cliente-servidor)
+      - Tratamento de sincronismo: semáforo/monitor (SO)
 
+- Sockets (1980)
+  - Todo sistema computacional tem sockets
+  - Foco na camada de transporte: TCP (síncrona) e UDP (assíncrona)
+  - Baseado na arquitetura cliente-servidor
+  - Classes, interfaces, métodos, atributos para comunicação entre máquinas de forma **explícita - Java**
+    - O programador deve tratar tudo: conexão (enlace), ----- ,meio (socket), tratar sincronismo (thread)
+  - Principais funcionalidades
 --------------------
 ## Semana 7 - 07-11/09/26
 
@@ -350,3 +396,9 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
 
 --------------------
 ## Semana 9 - 21-25/09/26
+
+--------------------
+## Semana 10 - 28/09-02/10/26
+
+--------------------
+## Semana 11 - 05-09/10/26
