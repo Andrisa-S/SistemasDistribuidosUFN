@@ -388,6 +388,14 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
   - Classes, interfaces, métodos, atributos para comunicação entre máquinas de forma **explícita - Java**
     - O programador deve tratar tudo: conexão (enlace), ----- ,meio (socket), tratar sincronismo (thread)
   - Principais funcionalidades
+    - Classe Socket
+    - Método bind (endereço de uma máquina IP + porta com um socket)
+    - Método listen (socket pode ficar escutando pra 'sempre' - thread)
+    - Método accept (bloqueia ou garante que o servidor responda uma requisição)
+    - Método connect (inicia a conexão)
+    - Método read/INPUT (ler os dados que estão no socket -> recebendo)
+    - Método write/OUTPUT (escrever algum dado no socket -> enviando)
+    - Método close (fechar a conexão)
 --------------------
 ## Semana 7 - 07-11/09/26
 
