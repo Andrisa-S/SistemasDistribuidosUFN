@@ -396,6 +396,10 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
     - Método read/INPUT (ler os dados que estão no socket -> recebendo)
     - Método write/OUTPUT (escrever algum dado no socket -> enviando)
     - Método close (fechar a conexão)
+  - Tratamentos de Exceção
+    - Localmente
+    - Outro local interno
+    - Outro local externo 
 --------------------
 ## Semana 7 - 07-11/09/26
 
