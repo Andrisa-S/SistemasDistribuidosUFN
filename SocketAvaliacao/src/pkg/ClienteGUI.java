@@ -4,26 +4,56 @@
  */
 package pkg;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author laboratorio
  */
 public class ClienteGUI extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ClienteGUI.class.getName());
 
-    //Formata data para dd/mm/yyyy
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final String HOST = "localhost";
+    private static final int PORTA = 50000;
+
+    // "uuuu" (ano ISO) em vez de "yyyy" (ano-da-era): com ResolverStyle.STRICT,
+    // "yyyy" sozinho não é suficiente para resolver o ano (exigiria também a era),
+    // e QUALQUER data seria rejeitada. "uuuu" resolve isso e ainda rejeita
+    // corretamente datas absurdas como 31/02/2026 ou 29/02 em ano não bissexto.
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT);
+
     /**
      * Creates new form ClienteGUI
      */
     public ClienteGUI() {
         initComponents();
+
+        // --- Código adicional (fora da área gerada pelo Form Editor) ---
+
+        // Liga o clique de "Enviar" à lógica de rede.
+        btnEnviar.addActionListener(this::btnEnviarActionPerformed);
+
+        // O campo de data começa com o texto "dd/mm/yyyy" já preenchido (não é um
+        // placeholder de verdade). Sem isto, quem clica e digita sem apagar acaba
+        // misturando o texto digitado com o texto de exemplo, e a validação
+        // (corretamente) rejeita o valor. Selecionar tudo ao focar corrige isso:
+        // o primeiro clique/tab já deixa o campo pronto para ser sobrescrito.
+        txtDataNascimento.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtDataNascimento.selectAll();
+            }
+        });
     }
 
     /**
@@ -173,16 +203,73 @@ public class ClienteGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNomeCompletoViewActionPerformed
 
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
-        txtNomeCompletoView.setText(txtNomeCompleto.getText());
-        String vetorNome [] = txtNomeCompleto.getText().toLowerCase().split(" ");
-        String data = txtDataNascimento.getText();
-        txtDataNascimentoView.setText(data);
-        String ano = data.substring(6, 10);
-        String email = vetorNome[0] + "." + vetorNome[vetorNome.length-1] + "." + ano +
-                        "@ufn.edu.br";
-        txtEmailCliente.setText(email);
-        Pessoa p = new Pessoa(txtNomeCompleto.getText(), ano, email);
+        // Botão de apoio: apenas limpa os campos para um novo cadastro.
+        txtNomeCompleto.setText("");
+        txtDataNascimento.setText("dd/mm/yyyy");
+        txtNomeCompletoView.setText("");
+        txtDataNascimentoView.setText("");
+        txtEmailCliente.setText("");
     }//GEN-LAST:event_btnAtualizarActionPerformed
+
+    // ---------------------------------------------------------------------
+    // Código de rede (fora da área gerada pelo Form Editor)
+    // ---------------------------------------------------------------------
+
+    /**
+     * Chamado pela EDT ao clicar em "Enviar". A validação é feita aqui mesmo
+     * (é rápida, não trava nada), mas a comunicação de rede é delegada a uma
+     * Thread separada, pois Socket/streams são operações bloqueantes e
+     * travariam a interface se rodassem na Event Dispatch Thread.
+     */
+    private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {
+        String nome = txtNomeCompleto.getText().trim();
+        String dataTexto = txtDataNascimento.getText().trim();
+
+        if (nome.isEmpty() || nome.split("\\s+").length < 2) {
+            JOptionPane.showMessageDialog(this, "Informe o nome completo (nome e sobrenome).", "Validação", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            LocalDate.parse(dataTexto, formatter);
+        } catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(this, "Data de nascimento inválida. Use o formato dd/MM/yyyy.", "Validação", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        btnEnviar.setEnabled(false);
+        Pessoa pessoaParaEnviar = new Pessoa(nome, dataTexto, null);
+
+        Thread threadEnvio = new Thread(() -> enviarParaServidor(pessoaParaEnviar));
+        threadEnvio.setDaemon(true);
+        threadEnvio.start();
+    }
+
+    /** Roda fora da EDT. Ao terminar, agenda a atualização da tela via invokeLater. */
+    private void enviarParaServidor(Pessoa pessoaParaEnviar) {
+        try (Socket socket = new Socket(HOST, PORTA);
+             ObjectOutputStream saida = new ObjectOutputStream(socket.getOutputStream());
+             ObjectInputStream entrada = new ObjectInputStream(socket.getInputStream())) {
+
+            saida.flush();
+            saida.writeObject(pessoaParaEnviar);
+
+            Pessoa pessoaRecebida = (Pessoa) entrada.readObject();
+
+            SwingUtilities.invokeLater(() -> {
+                txtNomeCompletoView.setText(pessoaRecebida.getNome());
+                txtDataNascimentoView.setText(pessoaRecebida.getDataNascimento());
+                txtEmailCliente.setText(pessoaRecebida.getEmail());
+                btnEnviar.setEnabled(true);
+            });
+        } catch (IOException | ClassNotFoundException e) {
+            SwingUtilities.invokeLater(() -> {
+                JOptionPane.showMessageDialog(this, "Não foi possível falar com o servidor: " + e.getMessage(),
+                        "Erro de rede", JOptionPane.ERROR_MESSAGE);
+                btnEnviar.setEnabled(true);
+            });
+        }
+    }
 
     /**
      * @param args the command line arguments

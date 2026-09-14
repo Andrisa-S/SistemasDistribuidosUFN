@@ -1,26 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pkg;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Representa um aluno cadastrado.
+ *
+ * Precisa implementar Serializable para poder "trafegar" pela rede dentro
+ * de um ObjectOutputStream/ObjectInputStream. O serialVersionUID fixo evita
+ * InvalidClassException caso cliente e servidor sejam compilados em
+ * momentos/JDKs ligeiramente diferentes.
+ */
 public class Pessoa implements Serializable {
-    String nome;
-    String dataNascimento;
-    String email;
 
-    
+    private static final long serialVersionUID = 1L;
+
+    private String nome;
+    private String dataNascimento;
+    private String email;
+
     public Pessoa(String nome, String dataNascimento, String email) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.email = email;
-    }
-
-    Pessoa(String nomePessoa, String email) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public String getNome() {
@@ -52,26 +54,28 @@ public class Pessoa implements Serializable {
         return "Pessoa{" + "nome=" + nome + ", dataNascimento=" + dataNascimento + ", email=" + email + '}';
     }
 
+    /**
+     * Duas Pessoas são consideradas "a mesma pessoa" quando têm o mesmo nome
+     * e a mesma data de nascimento. O e-mail é um dado DERIVADO desses dois
+     * campos (gerado pelo servidor) e por isso não entra na comparação de
+     * identidade - assim o servidor consegue localizar um cadastro já
+     * existente usando list.indexOf(candidata)/list.contains(candidata).
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (!(obj instanceof Pessoa)) {
             return false;
         }
         final Pessoa other = (Pessoa) obj;
-        if (!Objects.equals(this.nome, other.nome)) {
-            return false;
-        }
-        if (!Objects.equals(this.dataNascimento, other.dataNascimento)) {
-            return false;
-        }
-        return Objects.equals(this.email, other.email);
+        return Objects.equals(this.nome, other.nome)
+                && Objects.equals(this.dataNascimento, other.dataNascimento);
     }
 
-       
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, dataNascimento);
+    }
 }

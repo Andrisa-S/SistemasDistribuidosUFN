@@ -4,19 +4,57 @@
  */
 package pkg;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author laboratorio
  */
 public class ServidorGUI extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ServidorGUI.class.getName());
+
+    private static final int PORTA = 50000;
+
+    /** Lista "de verdade" com as pessoas cadastradas. Só é acessada dentro de blocos synchronized(lock). */
+    private final List<Pessoa> pessoas = new ArrayList<>();
+    /** Objeto usado como trava (lock) para tornar "verificar duplicidade + inserir" uma operação atômica. */
+    private final Object lock = new Object();
+
+    /** Model de verdade do JList, montado em runtime (o .form declara um model fixo só para o Design View). */
+    private DefaultListModel<String> listaModel;
+
+    private ServerSocket serverSocket;
 
     /**
      * Creates new form ServidorGUI
      */
     public ServidorGUI() {
         initComponents();
+
+        // --- Código adicional (fora da área gerada pelo Form Editor) ---
+
+        // Troca o model fixo ("Item 1"..."Item 5") por um model de verdade,
+        // que vamos preencher conforme pessoas forem cadastradas.
+        listaModel = new DefaultListModel<>();
+        jList1.setModel(listaModel);
+
+        // "Atualizar" passa a mostrar no log quantas pessoas já estão cadastradas.
+        jButton1.addActionListener(evt -> mostrarTotalCadastrado());
+
+        // Inicia o servidor em uma thread separada: accept() é bloqueante e
+        // não pode rodar na Event Dispatch Thread, senão a janela congela.
+        Thread threadServidor = new Thread(this::iniciarServidor, "thread-servidor");
+        threadServidor.setDaemon(true);
+        threadServidor.start();
     }
 
     /**
@@ -29,26 +67,66 @@ public class ServidorGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Pessoas cadastradas");
+
+        jTextArea1.setEditable(false);
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jLabel2.setText("Log:");
+
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(jList1);
+
+        jButton1.setText("Atualizar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(142, 142, 142)
-                .addComponent(jLabel1)
-                .addContainerGap(152, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(142, 142, 142)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton1)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(jLabel1)
-                .addContainerGap(267, Short.MAX_VALUE))
+                .addGap(11, 11, 11)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
 
         pack();
@@ -80,6 +158,116 @@ public class ServidorGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
+
+    // ---------------------------------------------------------------------
+    // Código de rede (fora da área gerada pelo Form Editor)
+    // ---------------------------------------------------------------------
+
+    /**
+     * Fica em loop aceitando conexões. Para cada cliente aceito, delega o
+     * atendimento a uma NOVA thread, para que múltiplos clientes possam ser
+     * atendidos ao mesmo tempo (é aí que mora o risco de concorrência sobre
+     * a lista "pessoas", tratado com o "lock" acima).
+     */
+    private void iniciarServidor() {
+        try {
+            serverSocket = new ServerSocket(PORTA);
+            log("Servidor ouvindo na porta " + PORTA);
+            while (true) {
+                Socket socketCliente = serverSocket.accept();
+                log("Cliente conectado: " + socketCliente.getInetAddress().getHostAddress());
+                Thread threadCliente = new Thread(() -> atenderCliente(socketCliente), "thread-cliente");
+                threadCliente.setDaemon(true);
+                threadCliente.start();
+            }
+        } catch (IOException e) {
+            log("Servidor encerrado: " + e.getMessage());
+        }
+    }
+
+    /** Executa inteiramente em uma thread própria do cliente (não é a EDT). */
+    private void atenderCliente(Socket socketCliente) {
+        try (Socket socket = socketCliente;
+             ObjectInputStream entrada = new ObjectInputStream(socket.getInputStream());
+             ObjectOutputStream saida = new ObjectOutputStream(socket.getOutputStream())) {
+
+            Pessoa recebida = (Pessoa) entrada.readObject();
+            Pessoa resposta = registrarOuLocalizar(recebida);
+
+            saida.flush();
+            saida.writeObject(resposta);
+
+            log("Respondido para " + socket.getInetAddress().getHostAddress() + ": " + resposta);
+        } catch (IOException | ClassNotFoundException e) {
+            log("Erro ao atender cliente: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Gera o e-mail e cadastra a pessoa, ou localiza o cadastro já existente.
+     *
+     * O bloco inteiro (checar duplicidade + inserir) roda dentro de um único
+     * synchronized(lock): isso é o que evita a condição de corrida. Se
+     * apenas a lista fosse "synchronized" (ex.: Collections.synchronizedList),
+     * ainda existiria uma janela entre o "contains" e o "add" em que duas
+     * threads poderiam intercalar e duplicar o cadastro.
+     */
+    private Pessoa registrarOuLocalizar(Pessoa recebida) {
+        synchronized (lock) {
+            String nome = recebida.getNome().trim();
+            String dataNascimento = recebida.getDataNascimento().trim();
+
+            String[] vetorNome = nome.split("\\s+");
+            String primeiroNome = vetorNome[0].toLowerCase();
+            String ultimoSobrenome = vetorNome[vetorNome.length - 1].toLowerCase();
+            String ano = dataNascimento.substring(6, 10);
+            String email = primeiroNome + "." + ultimoSobrenome + "." + ano + "@ufn.edu.br";
+
+            Pessoa candidata = new Pessoa(nome, dataNascimento, email);
+
+            int idx = pessoas.indexOf(candidata); // usa Pessoa.equals (nome + data)
+            if (idx >= 0) {
+                log("Pessoa já cadastrada, devolvendo cadastro existente: " + nome);
+                return pessoas.get(idx);
+            }
+
+            pessoas.add(candidata);
+            log("Novo cadastro: " + candidata);
+            atualizarListaGrafica();
+            return candidata;
+        }
+    }
+
+    /** Deve ser chamado já dentro do synchronized(lock), pois lê "pessoas". */
+    private void atualizarListaGrafica() {
+        List<String> snapshot = new ArrayList<>();
+        for (Pessoa p : pessoas) {
+            snapshot.add(p.getNome() + " - " + p.getEmail());
+        }
+        SwingUtilities.invokeLater(() -> {
+            listaModel.clear();
+            for (String s : snapshot) {
+                listaModel.addElement(s);
+            }
+        });
+    }
+
+    private void mostrarTotalCadastrado() {
+        synchronized (lock) {
+            log("Total cadastrado no momento: " + pessoas.size());
+        }
+    }
+
+    /** Log é sempre escrito na EDT, pois pode ser chamado por qualquer thread de cliente. */
+    private void log(String mensagem) {
+        SwingUtilities.invokeLater(() -> jTextArea1.append(mensagem + "\n"));
+    }
 }
