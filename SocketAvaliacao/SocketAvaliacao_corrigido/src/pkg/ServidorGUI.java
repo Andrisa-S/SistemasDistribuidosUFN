@@ -16,7 +16,7 @@ import javax.swing.SwingUtilities;
 
 /**
  *
- * @author laboratorio
+ * @author Andrisa Santos
  */
 public class ServidorGUI extends javax.swing.JFrame {
 
@@ -39,8 +39,6 @@ public class ServidorGUI extends javax.swing.JFrame {
      */
     public ServidorGUI() {
         initComponents();
-
-        // --- Código adicional (fora da área gerada pelo Form Editor) ---
 
         // Troca o model fixo ("Item 1"..."Item 5") por um model de verdade,
         // que vamos preencher conforme pessoas forem cadastradas.
@@ -167,15 +165,10 @@ public class ServidorGUI extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 
-    // ---------------------------------------------------------------------
-    // Código de rede (fora da área gerada pelo Form Editor)
-    // ---------------------------------------------------------------------
-
     /**
      * Fica em loop aceitando conexões. Para cada cliente aceito, delega o
      * atendimento a uma NOVA thread, para que múltiplos clientes possam ser
-     * atendidos ao mesmo tempo (é aí que mora o risco de concorrência sobre
-     * a lista "pessoas", tratado com o "lock" acima).
+     * atendidos ao mesmo tempo.
      */
     private void iniciarServidor() {
         try {
@@ -216,7 +209,7 @@ public class ServidorGUI extends javax.swing.JFrame {
      *
      * O bloco inteiro (checar duplicidade + inserir) roda dentro de um único
      * synchronized(lock): isso é o que evita a condição de corrida. Se
-     * apenas a lista fosse "synchronized" (ex.: Collections.synchronizedList),
+     * apenas a lista fosse "synchronized",
      * ainda existiria uma janela entre o "contains" e o "add" em que duas
      * threads poderiam intercalar e duplicar o cadastro.
      */
