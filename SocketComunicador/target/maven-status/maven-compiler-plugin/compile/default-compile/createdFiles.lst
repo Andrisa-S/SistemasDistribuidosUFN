@@ -1,0 +1,13 @@
+model\CadastroAcademico.class
+thread\ServidorAtendeClienteThread.class
+comunicador\Comunicador.class
+view\ServidorView.class
+thread\ServidorAceitaThread.class
+view\ClienteView.class
+model\Pessoa.class
+controller\ClienteController.class
+view\ClienteView$1.class
+MainServidor.class
+thread\ClienteEnvioThread.class
+controller\ServidorController.class
+MainCliente.class
