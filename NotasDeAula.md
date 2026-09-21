@@ -408,7 +408,20 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
 
 --------------------
 ## Semana 9 - 21-25/09/26
-
+- Desafio: Sistema de inscrição do SIRC
+  - https://github.com/alexandrezamberlan/laboratoriopraticascomputacaoufn
+  - Arquitetura Cliente-Servidor
+       - Cliente manda listas => 1 + N-1 (nesse caso, 1+4)
+       - Servidor vai devolver a lista de ausentes
+  - inscritos.csv - nome e cpf
+  - terca_manha.csv, terca_noite.csv, etc.
+  - 1. Carregar os arquivos nas listas
+       - Limpas cpfs
+       - Instanciar Classe aluno - nome e cpf
+       - Inserir na lista
+    2. Ordenar
+    3. Comparar os ausentes em 75%
+    4. Adicionar os ausentes em lista de ausentes
 --------------------
 ## Semana 10 - 28/09-02/10/26
 
