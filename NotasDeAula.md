@@ -422,6 +422,20 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
     2. Ordenar
     3. Comparar os ausentes em 75%
     4. Adicionar os ausentes em lista de ausentes
+
+  ### Autenticadores
+  - **Desafios**
+    - Servidor
+      - Relógio de X (s)
+      - Gera um TOKEN -> hashCode()
+      - Enviando o TOKEN para quem o solicita
+    
+    - Servidor
+      - Cadastrar usuário:
+      - P/ cada usuário em lista, ele gera tokens a cada X s
+     
+  ### Protocolo UDP
+  
 --------------------
 ## Semana 10 - 28/09-02/10/26
 
