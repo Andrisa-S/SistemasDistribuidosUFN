@@ -17,7 +17,7 @@ import javax.swing.SwingUtilities;
 
 /**
  *
- * @author laboratorio
+ * @author Andrisa Santos
  */
 public class ClienteGUI extends javax.swing.JFrame {
 
@@ -37,8 +37,6 @@ public class ClienteGUI extends javax.swing.JFrame {
      */
     public ClienteGUI() {
         initComponents();
-
-        // --- Código adicional (fora da área gerada pelo Form Editor) ---
 
         // Liga o clique de "Enviar" à lógica de rede.
         btnEnviar.addActionListener(this::btnEnviarActionPerformed);
@@ -210,10 +208,6 @@ public class ClienteGUI extends javax.swing.JFrame {
         txtDataNascimentoView.setText("");
         txtEmailCliente.setText("");
     }//GEN-LAST:event_btnAtualizarActionPerformed
-
-    // ---------------------------------------------------------------------
-    // Código de rede (fora da área gerada pelo Form Editor)
-    // ---------------------------------------------------------------------
 
     /**
      * Chamado pela EDT ao clicar em "Enviar". A validação é feita aqui mesmo
