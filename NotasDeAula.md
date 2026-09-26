@@ -386,7 +386,7 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
   - Foco na camada de transporte: TCP (síncrona) e UDP (assíncrona)
   - Baseado na arquitetura cliente-servidor
   - Classes, interfaces, métodos, atributos para comunicação entre máquinas de forma **explícita - Java**
-    - O programador deve tratar tudo: conexão (enlace), ----- ,meio (socket), tratar sincronismo (thread)
+    - O programador deve tratar tudo: conexão (endereço e portas lógicas), objetos para ler e escrever no meio (socket), tratar sincronismo (thread)
   - Principais funcionalidades
     - Classe Socket
     - Método bind (endereço de uma máquina IP + porta com um socket)
