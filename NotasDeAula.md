@@ -2,7 +2,7 @@
 
 --------------------
 ## Semana 1 - 27-31/07/26
-- **Introdução** - https://github.com/Andrisa-S/SistemasDistribuidosUFN/blob/4d2caadf0f1e9fd2f45835d429ac94ac958c87a4/Introducao.md
+- **Introdução** - [Introdução - Andrisa-S](https://github.com/Andrisa-S/SistemasDistribuidosUFN/blob/4d2caadf0f1e9fd2f45835d429ac94ac958c87a4/Introducao.md)
 - **Arquiteturas de Sistemas:**
   1) Cliente-Servidor
      - Modelo TCP/IP (4 camadas) => Prático
@@ -292,7 +292,7 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
 --------------------
 ## Semana 4 - 17-21/08/26
   ### Trabalho avaliativo - Threads
-  - https://github.com/alexandrezamberlan/sistemasDistribuidos/blob/master/5_trabalhos.md
+  - [Trabalhos - Alexandrezamberlan](https://github.com/alexandrezamberlan/sistemasDistribuidos/blob/master/5_trabalhos.md)
   - Mudar nome das variáveis em Java
   - Get/Set/Synchronized
   - Modelo MVC
@@ -336,7 +336,7 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
         - Exclusão mútua - lock ou relógio ou eleição
   - Pool de Threads
   - **Atividades:**
-    - https://github.com/Andrisa-S/SistemasDistribuidosUFN/blob/d2b6c439cbe4afff572f214ea4a2ef414f6fa3c9/Atividades24-08.md
+    - [Atividades 24-08 Andrisa-S](https://github.com/Andrisa-S/SistemasDistribuidosUFN/blob/d2b6c439cbe4afff572f214ea4a2ef414f6fa3c9/Atividades24-08.md)
     - Pesquisar, compilar e disponibilizar nos githubs pessoais sobre Relógios Físicos e Lógicos. Exclusão Mútua e Eleição
     - Pesquisar, compilar e exemplificar sobre a teoria de pool de threads
 
@@ -409,7 +409,7 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
 --------------------
 ## Semana 9 - 21-25/09/26
 - Desafio: Sistema de inscrição do SIRC
-  - https://github.com/alexandrezamberlan/laboratoriopraticascomputacaoufn
+  - [LAPINF - UFN](https://github.com/alexandrezamberlan/laboratoriopraticascomputacaoufn)
   - Arquitetura Cliente-Servidor
        - Cliente manda listas => 1 + N-1 (nesse caso, 1+4)
        - Servidor vai devolver a lista de ausentes
@@ -424,20 +424,59 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
     4. Adicionar os ausentes em lista de ausentes
 
   ### Autenticadores
-  - **Desafios**
-    - Servidor
-      - Relógio de X (s)
-      - Gera um TOKEN -> hashCode()
-      - Enviando o TOKEN para quem o solicita
-    
-    - Servidor
-      - Cadastrar usuário:
-      - P/ cada usuário em lista, ele gera tokens a cada X s
+  #### Trabalho Prático: Sistemas Distribuídos (Cliente-Servidor via UDP)
+  Objetivo:
+  Desenvolver uma aplicação cliente-servidor utilizando comunicação UDP por meio da classe Comunicador e uma interface gráfica (GUI).
+  Requisitos do Sistema:
+  
+  * Interface Gráfica: O cliente deve possuir uma interface gráfica desenvolvida em Java Swing (ou outro ambiente gráfico de sua preferência/outra linguagem).
+  * Comunicação: Todo o envio e recebimento de dados deve ser feito via protocolo UDP.
+
+  ------------------------------
+  #### Dinâmica e Funcionamento da Arquitetura
+  
+  #### 1. Cadastro do Cliente
+  
+  * O cliente inicia o contato com o servidor enviando seu nome completo e e-mail.
+  * O servidor deve registrar o usuário em uma lista interna utilizando a classe Pessoa (conforme visto em aula).
+  * O servidor deve controlar e impedir cadastros duplicados.
+  
+  #### 2. Autenticação por Chave Temporária (Token)
+  
+  * O cliente deve solicitar periodicamente ao servidor uma chave token (gerada de forma aleatória).
+  * Cada token tem validade estrita de 60 segundos.
+  * Se o cliente solicitar um novo token dentro do prazo de 60 segundos, o servidor mantém o mesmo token. Caso o tempo expire, o servidor deve gerar e retornar uma nova chave.
+      
+      - Servidor
+        - Cadastrar usuário:
+        - P/ cada usuário em lista, ele gera tokens a cada X s
      
   ### Protocolo UDP
   
 --------------------
 ## Semana 10 - 28/09-02/10/26
+### RPC - Remote Procedure Call (teoria/python)
+- [RPC - Apresentações Alexandrezamberlan](https://github.com/alexandrezamberlan/apresentacoes/blob/main/2019_PySM_RPC_2019.pdf)
+- **Protocolo de comunicação** - utilizado para requisitar/solicitar serviço de um programa localizado em outro computador na rede sem ter que se preocupar com detalhes de rede
+- **Conceitos Atrelados**
+  - Sistemas distribuídos + Sistema operacional + Redes
+  - Arquitetura Cliente-Servidor
+  - Camada Transporte
+    - TCP (síncrono): Sistema bloqueante
+    - UDP (assíncrono): Não bloqueante
+- **Python**
+  - <img width="502" height="352" alt="image" src="https://github.com/user-attachments/assets/fc1802df-31aa-47a3-9ada-419636e07f3f" />
 
+- Operação
+  - *Procedure void*
+  - *Function return*
+- Similar a API de comunicação
+
+- **RMI - Remote Method Invocation (java)**
+  - <img width="435" height="98" alt="{2CD5062B-B65D-4E90-8FDE-8F1FD6FF878D}" src="https://github.com/user-attachments/assets/fe8e8a7a-d892-449d-bda9-01f3514214fc" />
+  - <img width="507" height="217" alt="image" src="https://github.com/user-attachments/assets/b764d384-0acb-4072-99b9-7fdd58f25afc" /> *(DataHora é uma classe)
+  - <img width="434" height="441" alt="image" src="https://github.com/user-attachments/assets/f611ae20-b862-494e-982e-046768606db6" />
+
+- **gRPC (C#)**
 --------------------
 ## Semana 11 - 05-09/10/26
