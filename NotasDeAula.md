@@ -510,5 +510,5 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
 - Classes Emissor e Receptor (grupo *InetAddress* + *MulticastSocket*)
 - Threads **Enviadora** e **Receptora**
 
-  - **Atividade 14/10**
+- **Atividade 14/10**
     - Baseado [nesse código](https://github.com/alexandrezamberlan/sistemasDistribuidos/tree/master/07-Multicast/java/trabalhoChat_turma), fazer melhorias como: data hora, quebra de linha invés de scroll (soft wrap), não enviar mensagens vazias, armazenar usuários ativos para *unicast*
