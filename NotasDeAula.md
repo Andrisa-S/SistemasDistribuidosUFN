@@ -480,3 +480,32 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
 - **gRPC (C#)**
 --------------------
 ## Semana 11 - 05-09/10/26
+### Atividade:
+  - RMI de nome completo (Cliente)
+  - Servidor  gera email e objeto pessoa
+  - Retorna email nome.sobrenome@ufn.edu.br
+
+### Multicast Java
+  - **Tecnologia Multicast**
+    - Comunicação em grupo (um endereço virtual em que computadores que quiserem compartilhar informações devem acessar)
+    - Modos de comunicação: unicast (um para um), multicast (um para vários do mesmo grupo), broadcast (um para todos)
+    - Modelo TCP/IP: endereço de rede; endereço de grupo (classe D); roteamento no grupo
+    - Protocolo UDP
+    - Conexão simultânea/online
+    - Exemplos:
+      - *TEAMS*
+      - *ZOOM*
+      - *Discord*
+    - Arquitetura ponto-a-ponto
+      - Máquina/estação é servidor e cliente
+    - Protocolo de transporte padrão: UDP
+      - Montar mensagem + enviar mensagem (bloqueantes)
+      - Receber (bloqueante)
+    - Conceitos:
+      - IP do Grupo (ip falso, na convenção 239.X.Y.W)
+      - Porta de conexão (saída da estação)
+      - Threads 'ouvidora' ou 'receptora' + 'falante' ou 'enviadora' ('quebrar' as ações bloqueantes)
+
+- Uso do ComunicadorUDP (*DatagramPacket*)
+- Classes Emissor e Receptor (grupo *InetAddress* + *MulticastSocket*)
+- Threads **Enviadora** e **Receptora**
