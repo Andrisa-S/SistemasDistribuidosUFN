@@ -512,3 +512,21 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
 
 - **Atividade 14/10**
     - Baseado [nesse código](https://github.com/alexandrezamberlan/sistemasDistribuidos/tree/master/07-Multicast/java/trabalhoChat_turma), fazer melhorias como: data hora, quebra de linha invés de scroll (soft wrap), não enviar mensagens vazias, armazenar usuários ativos para *unicast*
+
+-----
+## Semana 12 - 14-16/10/26
+### Cliente-Servidor
+  - Heterogêneos
+  - TCP/IP: ip, domínio, porta, socket, udp, tcp
+  - Objetos:
+    - Socket e ServerSocket
+    - Escritor e leitor de socket
+    - Serialização
+    - Threads
+  - Manual: [socket + leitor + escritor + serialização ] comunicador (TCP ou UDP)
+  - RPC
+    - rpcPython
+    - RMI Java: Interface -> Classe + servidor + cliente
+
+### Ponto-a-ponto
+  - Multicast: Grupo: IP de classe + porta de envio + socket + escritor + leitor + Threads
