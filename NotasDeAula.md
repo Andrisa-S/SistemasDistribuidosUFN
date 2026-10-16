@@ -530,3 +530,15 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
 
 ### Ponto-a-ponto
   - Multicast: Grupo: IP de classe + porta de envio + socket + escritor + leitor + Threads
+
+### Desafio telefonia
+- Desafio feito anteriormente na disciplina de Pesquisa e Ordenação com HashMap, desmembrar e refazer em sistemas distribuídos
+- [Meu código](https://github.com/Andrisa-S/PesquisaEOrdenacaoUFN/tree/main/DesafioTelefonia), [Código professor](https://github.com/alexandrezamberlan/pesquisa_ordenacao/tree/master/__aulaPratica/Telefonia)
+- Fazer com estrutura cliente-servidor
+  - Base.txt
+  - Gráfico ou não
+  - HashMap
+  - Dados da sessão e celular
+  - Servidor deve ter a base de sessões
+  - Cliente pesquisa o número de celular e é exibido os dados da sessão
+- RMI, RPC ou semelhantes de sistemas distribuídos (multicast não é recomendado)
