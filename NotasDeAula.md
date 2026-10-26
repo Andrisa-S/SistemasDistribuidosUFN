@@ -542,3 +542,18 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
   - Servidor deve ter a base de sessões
   - Cliente pesquisa o número de celular e é exibido os dados da sessão
 - RMI, RPC ou semelhantes de sistemas distribuídos (multicast não é recomendado)
+
+-----
+## Semana 14 - 26-30/10/26
+- Multicast
+  - Python L
+  - C#
+  - Java
+
+- UDP
+  - IP do grupo
+    - Classe D
+
+- Arq. Ponto-a-ponto
+
+### JGroups
