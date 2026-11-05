@@ -557,3 +557,17 @@ Em um sistema distribuído, processos ou nós muitas vezes precisam coordenar su
 - Arq. Ponto-a-ponto
 
 ### JGroups
+
+-----
+## Semana 15 - 05-06/11/26
+
+### JSON
+  - Google API REST
+  - Diferente de toon
+  - Serialização -> Dicionário
+  - Objeto -> Dicionário/lista -> JSON -> CSV ->
+  - [Engenharia de Prompt: Guia de Prompt JSON em Arquiteturas RAG](https://github.com/alexandrezamberlan/sistemasDistribuidos/blob/master/9%20-%20UsandoJSON/prompt_json.md)
+    - Economia de tokens e melhor qualidade de descrição e detalhamento
+    - Ser detalhista e não ambíguo
+    - Estrutura: (Role + objetivo + tarefa) + esquema bd + regras de segmento + exemplos de resposta + estilo de resposta
+  - Java: biblioteca não nativa GSON
