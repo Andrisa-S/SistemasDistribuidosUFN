@@ -4,9 +4,19 @@
  */
 package view;
 
+import java.awt.image.BufferedImage;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
+import model.Sessao;
+import remoto.ServicoSessao;
+import util.QRCode;
+
 /**
  *
- * @author laboratorio
+ * @author Andrisa Santos
  */
 public class Cliente extends javax.swing.JFrame {
     
@@ -15,8 +25,66 @@ public class Cliente extends javax.swing.JFrame {
     /**
      * Creates new form Cliente
      */
+    private String host;
+    private ServicoSessao servico;
+
     public Cliente() {
         initComponents();
+        lblQRCode.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblQRCode.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        host = JOptionPane.showInputDialog(null, "IP do servidor:", "localhost");
+        if (host == null || host.trim().isEmpty()) {
+            System.exit(0);
+        }
+        host = host.trim();
+    }
+
+    // Localiza o serviço no RMI Registry do servidor (só na primeira chamada)
+    private ServicoSessao obterServico() throws Exception {
+        if (servico == null) {
+            Registry registry = LocateRegistry.getRegistry(host, Registry.REGISTRY_PORT);
+            servico = (ServicoSessao) registry.lookup(ServicoSessao.NOME);
+        }
+        return servico;
+    }
+
+    // Envia o link ao servidor e mostra o link encurtado e o QR Code
+    private void encurtar() {
+        final String link = txtLink.getText().trim();
+        if (link.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Informe o link a ser encurtado.");
+            return;
+        }
+        btnEncurtar.setEnabled(false);
+        txtLink.setEnabled(false);
+        new SwingWorker<Sessao[], Void>() { // chamada remota fora da thread da tela
+            @Override
+            protected Sessao[] doInBackground() throws Exception {
+                ServicoSessao s = obterServico();
+                return new Sessao[]{s.encurtarLink(link), s.gerarQRCode(link)};
+            }
+
+            @Override
+            protected void done() {
+                btnEncurtar.setEnabled(true);
+                txtLink.setEnabled(true);
+                try {
+                    Sessao[] r = get();
+                    txtLinkEncurtado.setText(r[0].getDadosSessao());
+                    BufferedImage img = QRCode.base64ParaImagem(r[1].getDadosSessao());
+                    lblQRCode.setIcon(new ImageIcon(img));
+                    pack();
+                } catch (Exception e) {
+                    servico = null; // força nova conexão na próxima tentativa
+                    Throwable causa = e;
+                    while (causa.getCause() != null) {
+                        causa = causa.getCause(); // mensagem original (o RMI aninha as exceções)
+                    }
+                    JOptionPane.showMessageDialog(Cliente.this, "Erro: " + causa.getMessage(),
+                            "Encurtador", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }.execute();
     }
 
     /**
@@ -36,6 +104,7 @@ public class Cliente extends javax.swing.JFrame {
         lblLinkEncurtado = new javax.swing.JLabel();
         txtLinkEncurtado = new javax.swing.JTextField();
         lblQRCode = new javax.swing.JLabel();
+        btnEncurtar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -62,6 +131,13 @@ public class Cliente extends javax.swing.JFrame {
         lblQRCode.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         lblQRCode.setText("QR Code:");
 
+        btnEncurtar.setText("Gerar link encurtado e QR Code");
+        btnEncurtar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEncurtarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -86,7 +162,8 @@ public class Cliente extends javax.swing.JFrame {
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(lblLinkEncurtado)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(txtLinkEncurtado, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtLinkEncurtado, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnEncurtar, javax.swing.GroupLayout.Alignment.TRAILING)))
                 .addGap(16, 16, 16))
         );
         layout.setVerticalGroup(
@@ -107,6 +184,8 @@ public class Cliente extends javax.swing.JFrame {
                     .addComponent(lblLinkEncurtado)
                     .addComponent(txtLinkEncurtado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addComponent(btnEncurtar)
+                .addGap(18, 18, 18)
                 .addComponent(lblQRCode)
                 .addContainerGap(106, Short.MAX_VALUE))
         );
@@ -114,8 +193,12 @@ public class Cliente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnEncurtarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncurtarActionPerformed
+        encurtar();
+    }//GEN-LAST:event_btnEncurtarActionPerformed
+
     private void txtLinkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLinkActionPerformed
-        // TODO add your handling code here:
+        encurtar();
     }//GEN-LAST:event_txtLinkActionPerformed
 
     /**
@@ -144,6 +227,7 @@ public class Cliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEncurtar;
     private javax.swing.JLabel lblLink;
     private javax.swing.JLabel lblLinkEncurtado;
     private javax.swing.JLabel lblNomeUsuario;

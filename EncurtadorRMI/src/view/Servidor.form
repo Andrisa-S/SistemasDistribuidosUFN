@@ -40,10 +40,8 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="btnEnviar" min="-2" max="-2" attributes="0"/>
-                  <Component id="jScrollPane2" alignment="1" min="-2" pref="364" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
@@ -62,10 +60,11 @@
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="txtLinkEncurtado" min="-2" pref="243" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="txtQRCode" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                              <Component id="txtQRCode" alignment="0" min="-2" pref="313" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
+                  <Component id="jScrollPane2" min="-2" pref="364" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="22" max="32767" attributes="0"/>
           </Group>
@@ -88,8 +87,6 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="txtQRCode" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="btnEnviar" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane2" min="-2" pref="132" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
@@ -115,6 +112,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtLinkEncurtado">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblLink">
       <Properties>
@@ -125,14 +125,12 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtLink">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtLinkActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnEnviar">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Enviar"/>
-      </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
       <AuxValues>
@@ -152,7 +150,7 @@
     <Component class="javax.swing.JTextField" name="txtQRCode">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
-        <Property name="text" type="java.lang.String" value="QR Code Gerado"/>
+        <Property name="text" type="java.lang.String" value="Aguardando requisi&#xe7;&#xe3;o..."/>
       </Properties>
     </Component>
   </SubComponents>

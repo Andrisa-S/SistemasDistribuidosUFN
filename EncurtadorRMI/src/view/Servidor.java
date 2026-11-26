@@ -4,9 +4,15 @@
  */
 package view;
 
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import model.TabelaHash;
+import remoto.ServicoSessao;
+import remoto.ServicoSessaoImpl;
+
 /**
  *
- * @author laboratorio
+ * @author Andrisa Santos
  */
 public class Servidor extends javax.swing.JFrame {
     
@@ -15,8 +21,54 @@ public class Servidor extends javax.swing.JFrame {
     /**
      * Creates new form Servidor
      */
+    private static final int PORTA = Registry.REGISTRY_PORT; // 1099
+
+    private final TabelaHash tabela = new TabelaHash();
+    private Registry registry; // mantém a referência para o registry não ser coletado
+
     public Servidor() {
         initComponents();
+        txtHistorico.setEditable(false);
+        iniciarServico();
+    }
+
+    // Sobe o RMI Registry e registra o serviço de encurtar link
+    private void iniciarServico() {
+        try {
+            String ip = ServicoSessaoImpl.descobrirIp();
+            System.setProperty("java.rmi.server.hostname", ip); // antes de exportar o objeto
+            ServicoSessaoImpl servico = new ServicoSessaoImpl(tabela.sessoes, this::registrar, this::mostrarLink, this::mostrarQRCode);
+            registry = LocateRegistry.createRegistry(PORTA);
+            registry.rebind(ServicoSessao.NOME, servico);
+            setTitle("Servidor - " + ip + ":" + PORTA);
+            registrar("Servidor iniciado em " + ip + ":" + PORTA);
+        } catch (Exception e) {
+            registrar("Erro ao iniciar o servidor: " + e.getMessage());
+            logger.log(java.util.logging.Level.SEVERE, null, e);
+        }
+    }
+
+    // Mostra o último link recebido e o link encurtado devolvido (campos somente leitura)
+    private void mostrarLink(String link, String linkEncurtado) {
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            txtLink.setText(link);
+            txtLinkEncurtado.setText(linkEncurtado);
+            txtQRCode.setText("Aguardando QR Code...");
+        });
+    }
+
+    // Mostra se o QR Code foi gerado com sucesso
+    private void mostrarQRCode(boolean sucesso) {
+        javax.swing.SwingUtilities.invokeLater(() -> txtQRCode.setText(
+                sucesso ? "QR Code gerado com sucesso" : "Falha ao gerar o QR Code"));
+    }
+
+    // Exibe uma linha no histórico (pode ser chamado pelas threads do RMI)
+    private void registrar(String mensagem) {
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            txtHistorico.append(mensagem + "\n");
+            txtHistorico.setCaretPosition(txtHistorico.getDocument().getLength());
+        });
     }
 
     /**
@@ -35,7 +87,6 @@ public class Servidor extends javax.swing.JFrame {
         txtLinkEncurtado = new javax.swing.JTextField();
         lblLink = new javax.swing.JLabel();
         txtLink = new javax.swing.JTextField();
-        btnEnviar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtHistorico = new javax.swing.JTextArea();
         txtQRCode = new javax.swing.JTextField();
@@ -55,20 +106,21 @@ public class Servidor extends javax.swing.JFrame {
         lblLink.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lblLink.setText("Link:");
 
+        txtLink.setEditable(false);
         txtLink.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtLinkActionPerformed(evt);
             }
         });
 
-        btnEnviar.setText("Enviar");
+        txtLinkEncurtado.setEditable(false);
 
         txtHistorico.setColumns(20);
         txtHistorico.setRows(5);
         jScrollPane2.setViewportView(txtHistorico);
 
         txtQRCode.setEditable(false);
-        txtQRCode.setText("QR Code Gerado");
+        txtQRCode.setText("Aguardando requisição...");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -76,8 +128,6 @@ public class Servidor extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnEnviar)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                             .addGap(112, 112, 112)
@@ -93,7 +143,8 @@ public class Servidor extends javax.swing.JFrame {
                                     .addComponent(lblLinkEncurtado)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(txtLinkEncurtado, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(txtQRCode, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtQRCode, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -112,7 +163,6 @@ public class Servidor extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(txtQRCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnEnviar)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33))
@@ -151,7 +201,6 @@ public class Servidor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEnviar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;

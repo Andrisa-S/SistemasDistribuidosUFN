@@ -48,6 +48,7 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="txtLinkEncurtado" min="-2" pref="243" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="btnEncurtar" alignment="1" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
@@ -74,6 +75,8 @@
                   <Component id="lblLinkEncurtado" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtLinkEncurtado" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="btnEncurtar" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="lblQRCode" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="106" max="32767" attributes="0"/>
@@ -133,6 +136,14 @@
         </Property>
         <Property name="text" type="java.lang.String" value="QR Code:"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnEncurtar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Gerar link encurtado e QR Code"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEncurtarActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
